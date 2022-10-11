@@ -1,0 +1,14 @@
+webmis
+public/logs
+public/upload/*
+tmp/*
+!.gitkeep
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
