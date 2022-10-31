@@ -1,8 +1,8 @@
 package task
 
-type Main struct{}
+type Main struct{ Base }
 
 /* 首页 */
-func (Main) New() {
-	print("Cli\n")
+func (r Main) New() {
+	r.Print("Cli")
 }

@@ -119,6 +119,11 @@ func (m *Model) Db(db string) {
 }
 
 /* 表 */
+func (m *Model) Partition(partition ...string) {
+	m.table = "  PARTITION(" + util.Implode(", ", partition) + ")"
+}
+
+/* 表 */
 func (m *Model) Table(table string) {
 	m.table = table
 }

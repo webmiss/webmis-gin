@@ -30,9 +30,9 @@ func main() {
 		if a == "start" {
 			(&task.Socket{}).Start()
 		}
-	case c == "redis":
-		if a == "logs" {
-			(&task.Redis{}).Logs()
+	case c == "logs":
+		if a == "log" {
+			(&task.Logs{}).Log()
 		}
 	default:
 		(&task.Main{}).New()

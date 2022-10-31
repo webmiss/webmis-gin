@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Socket struct{}
+type Socket struct{ Base }
 
 func (Socket) Start() {
 	// 配置
