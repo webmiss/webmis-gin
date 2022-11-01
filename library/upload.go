@@ -11,7 +11,6 @@ import (
 	"strings"
 	"time"
 	"webmis/config"
-	"webmis/library/aliyun"
 	"webmis/util"
 
 	"github.com/gin-gonic/gin"
@@ -93,35 +92,6 @@ func (u Upload) Base64(params map[string]interface{}) string {
 		return ""
 	}
 	return filename
-}
-
-/* OSS-签名直传 */
-func (u Upload) OssPolicy(ext string, expireTime int64) map[string]interface{} {
-	// 类型
-	extImg := []string{"jpg", "png", "gif"}
-	extVod := []string{"mp4"}
-	// 目录
-	dir := "tmp/"
-	if util.InArray(ext, extImg) {
-		dir = "img/"
-	} else if util.InArray(ext, extVod) {
-		dir = "vod/"
-	}
-	// 文件名
-	file := u.GetFileName()
-	if ext != "" {
-		file += "." + ext
-	}
-	return (&aliyun.Oss{}).Policy(dir, file, expireTime, 0)
-}
-
-/* OSS-签名验证 */
-func (Upload) OssPolicyVerify(param map[string]interface{}) bool {
-	dir := (&util.Type{}).Strval(param["dir"])
-	file := (&util.Type{}).Strval(param["file"])
-	expire := (&util.Type{}).Strval(param["expire"])
-	sign := (&util.Type{}).Strval(param["sign"])
-	return (&aliyun.Oss{}).PolicyVerify(dir, file, expire, sign)
 }
 
 /* 图片回收 */

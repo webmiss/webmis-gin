@@ -4,7 +4,6 @@ import (
 	"webmis/config"
 	"webmis/library"
 	"webmis/service"
-	"webmis/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -57,20 +56,4 @@ func (r Index) Qrcode(c *gin.Context) {
 	// 返回
 	img := (&library.FileEo{}).Bytes(file)
 	c.Writer.WriteString(string(img))
-}
-
-/* OSS-上传回调 */
-func (r Index) OssCallback(c *gin.Context) {
-	// 参数
-	param := map[string]interface{}{}
-	c.BindJSON(&param)
-	// 验证
-	if !(&library.Upload{}).OssPolicyVerify(param) {
-		return
-	}
-	// 数据处理
-	text := string(util.JsonEncode(param))
-	util.Exec("echo " + text + " > public/upload/callback.txt")
-	// 返回
-	r.GetJSON(c, gin.H{"Status": "Ok"})
 }
