@@ -137,7 +137,7 @@ func (r SysUser) Add(c *gin.Context) {
 	tx, _ := conn.Begin()
 	// 用户
 	m1 := (&model.User{}).New()
-	m1.Values(map[string]interface{}{"id": uid, "tel": tel, "password": (&util.Hash{}).Md5(passwd)})
+	m1.Values(map[string]interface{}{"id": uid, "tel": tel, "password": (&util.Hash{}).Md5(passwd), "rtime": util.Time()})
 	sql, args := m1.InsertSQL()
 	_, err1 := tx.Exec(sql, args...)
 	// 详情
@@ -147,12 +147,12 @@ func (r SysUser) Add(c *gin.Context) {
 	_, err2 := tx.Exec(sql, args...)
 	// 权限-System
 	m3 := (&model.SysPerm{}).New()
-	m3.Values(map[string]interface{}{"uid": uid})
+	m3.Values(map[string]interface{}{"uid": uid, "utime": util.Time()})
 	sql, args = m3.InsertSQL()
 	_, err3 := tx.Exec(sql, args...)
 	// 权限-Api
 	m4 := (&model.ApiPerm{}).New()
-	m4.Values(map[string]interface{}{"uid": uid})
+	m4.Values(map[string]interface{}{"uid": uid, "utime": util.Time()})
 	sql, args = m4.InsertSQL()
 	_, err4 := tx.Exec(sql, args...)
 	if err1 != nil || err2 != nil || err3 != nil || err4 != nil {
@@ -198,7 +198,7 @@ func (r SysUser) Edit(c *gin.Context) {
 	m.Columns("id")
 	m.Where("tel=?", tel)
 	user := m.FindFirst()
-	if util.Empty(user) {
+	if !util.Empty(user) && user["id"] != uid {
 		r.GetJSON(c, gin.H{"code": 4000, "msg": "该用户不存在!"})
 		return
 	}
