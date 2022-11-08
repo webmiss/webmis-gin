@@ -82,6 +82,7 @@ func (r Data) PartitionID(date string, table string, column string) map[string]i
 	one := m.FindFirst()
 	one["date"] = date
 	one["time"] = t
+	one["table"] = table
 	return one
 }
 
